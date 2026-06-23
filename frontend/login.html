@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Login - JC Inventario</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #0f0f0f, #1c1c1c);
+    }
+
+    .login-box {
+        background: rgb(255, 255, 255);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255,255,255,0.1);
+        padding: 4rem 2.5rem;
+        border-radius: 16px;
+        width: 320px;
+        text-align: center;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        color: #000000;
+    }
+
+    .login-box img {
+        width: 60px;
+       
+        
+        height: 70px;
+    }
+
+    .login-box h2 {
+        margin-bottom: 20px;
+        font-weight: 500;
+        letter-spacing: 1px;
+    }
+
+    input {
+        width: 100%;
+        padding: 14px;
+        margin: 10px 0;
+        border: none;
+        border-radius: 8px;
+        background: rgba(56, 56, 56, 0.08);
+        color: #484848;
+        outline: none;
+        transition: 0.3s;
+    }
+
+    input::placeholder {
+        color: #aaa;
+    }
+
+    input:focus {
+        background: rgba(255,255,255,0.15);
+        box-shadow: 0 0 0 1px #4f9cff;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        margin-top: 10px;
+        background: linear-gradient(135deg, #000000, #000000);
+        border: none;
+        color: white;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(79,156,255,0.4);
+    }
+
+    #error {
+        color: #ff6b6b;
+        font-size: 13px;
+        margin-top: 10px;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="login-box">
+
+    <a href="https://www.facebook.com/photo/?fbid=122149450166170622&set=a.122101400228170622">
+    <img src="img/JCLogoNegroNegro.png" alt="Logo">
+    </a>
+
+    <h2>Login</h2>
+
+    <input type="text" id="user" placeholder="Usuario">
+    <input type="password" id="pass" placeholder="Contraseña">
+
+    <button onclick="entrar()">Ingresar</button>
+    <p id="error"></p>
+</div>
+
+<script>
+async function entrar() {
+    const username = document.getElementById('user').value;
+    const password = document.getElementById('pass').value;
+    const errorTxt = document.getElementById('error');
+
+    const res = await fetch('http://localhost:3000/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+        localStorage.setItem('token', data.token);
+        window.location.href = 'admin.html';
+    } else {
+        errorTxt.innerText = data.error;
+    }
+}
+</script>
+
+</body>
+</html>

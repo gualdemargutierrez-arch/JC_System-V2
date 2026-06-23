@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <div style="text-align: right; padding: 10px; background-color: #f1f1f1;">
+    <span>Admin JC Conectado ✅</span>
+    <button onclick="cerrarSesion()" style="background-color: #e60c0c; color: white; margin-left: 10px; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
+        Cerrar Sesión
+    </button>
+</div>
+<link rel="stylesheet" href="/JC/frontend/Styles/admin.css">
+  <meta charset="UTF-8">
+  <h1> 
+    <a href="index.html" class="btn22">JC</a>
+    <a href="eliminar.html" class="btn33">Eliminar</a>
+  </h1>
+  
+  <title>Admin - Inventario</title>
+   
+  <style>
+    body {
+      font-family: Arial;
+    }
+    input, select, button {
+      margin: 5px;
+      padding: 5px;
+    }
+    table {
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 8px;
+      border: 1px solid black;
+    }
+  </style>
+
+</head>
+<body>
+    
+
+  <h1>Panel de Administración</h1>
+ 
+  <h2>Agregar producto nuevo</h2>
+  <input type="text" id="nombre" placeholder="Nombre">
+  <input type="text" id="modelo" placeholder="Modelo">
+  <input type="text" id="color" placeholder="Color">
+  <input type="text" id="capacidad" placeholder="Capacidad">
+  <input type="number" id="cantidad" placeholder="Cantidad">
+
+  <button onclick="agregarProducto()">Agregar</button>
+
+
+<!--
+  <h2>Inventario Actual</h2>
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Modelo</th>
+      <th>Color</th>
+      <th>Capacidad</th>
+      <th>Stock</th>
+      <th>Acciones</th> </tr>
+  </thead>
+  <tbody id="tabla-productos">
+    </tbody>
+</table>
+-->
+
+  <script>
+
+
+(function() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        window.location.href = 'login.html';
+    }
+})();
+
+
+function cerrarSesion() {
+    localStorage.removeItem('token');
+    window.location.href = 'login.html';
+}
+
+    const URL = 'http://localhost:3000';
+
+    
+   async function cargarProductos() {
+    try {
+        console.log("Intentando conectar con:", URL + '/productos');
+        const res = await fetch(URL + '/productos',
+            {
+    headers: {
+        'Authorization': localStorage.getItem('token') 
+    }
+    });
+        
+        if (!res.ok) throw new Error("Error en la respuesta del servidor");
+
+        const productos = await res.json();
+        console.log("Productos recibidos:", productos);
+
+        const tabla = document.getElementById('tabla-productos');
+        if (!tabla) {
+            console.error("No se encontró el elemento con id 'tabla-productos' en el HTML");
+            return;
+        }
+
+        tabla.innerHTML = ''; 
+
+     productos.forEach(p => {
+    // Si la cantidad es menor a 5, el color será rojo, de lo contrario será negro
+    const colorStock = p.cantidad < 5 ? 'red' : 'black';
+    const fontStyle = p.cantidad < 5 ? 'bold' : 'normal';
+
+    tabla.innerHTML += `
+        <tr>
+            <td>${p.id}</td>
+            <td>${p.nombre}</td>
+            <td>${p.modelo}</td>
+            <td>${p.color}</td>
+            <td>${p.capacidad}</td>
+            <td style="color: ${colorStock}; font-weight: ${fontStyle};">
+                ${p.cantidad} ${p.cantidad < 5 ? '⚠️' : ''}
+            </td>
+            <td>
+                <button onclick="eliminarProducto(${p.id})" style="color: red;">Eliminar</button>
+            </td>
+        </tr>
+    `;
+});
+        console.log("Tabla dibujada con éxito");
+    } catch (error) {
+        console.error("Hubo un fallo al cargar productos:", error);
+    }
+}
+    
+    async function agregarProducto() {
+      const data = {
+        nombre: document.getElementById('nombre').value,
+        modelo: document.getElementById('modelo').value,
+        color: document.getElementById('color').value,
+        capacidad: document.getElementById('capacidad').value,
+        cantidad: document.getElementById('cantidad').value
+      };
+
+      await fetch(URL + '/productos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      alert('Producto agregado');
+      cargarProductos();
+    }
+
+    
+    async function sumarStock() {
+      const id = document.getElementById('producto_existente').value;
+      const cantidad = document.getElementById('cantidad_extra').value;
+
+      await fetch(URL + `/productos/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cantidad })
+      });
+
+      alert('Stock actualizado');
+      cargarProductos();
+    }
+
+
+
+
+
+
+
+
+
+
+
+async function enviarActualizacion() {
+    const id = document.getElementById('prodId').value;
+    const cantidad = document.getElementById('prodCantidad').value;
+    const mensajeElemento = document.getElementById('mensaje-estado');
+
+    if (!id || !cantidad) {
+        alert("Por favor, completa ambos campos");
+        return;
+    }
+
+    try {
+        const respuesta = await fetch('http://localhost:3000/update/productos', {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json' 
+            },
+            body: JSON.stringify({
+                id: id,       
+                cantidad: cantidad
+            })
+        });
+
+        const resultado = await respuesta.json();
+
+        if (respuesta.ok) {
+            mensajeElemento.innerText = "✅ " + resultado.mensaje;
+            mensajeElemento.style.color = "green";
+            cargarProductos(); 
+        } else {
+            mensajeElemento.innerText = "❌ Error: " + (resultado.error || resultado.mensaje);
+            mensajeElemento.style.color = "red";
+        }
+
+    } catch (error) {
+        console.error("Error de conexión:", error);
+        mensajeElemento.innerText = "No se pudo conectar con el servidor";
+    }
+}
+cargarProductos();
+
+async function exportarVentasPDF() {
+    try {
+        const res = await fetch(URL + '/ventas',{
+    headers: {
+        'Authorization': localStorage.getItem('token')
+    }
+
+    });
+        const ventas = await res.json();
+
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+       
+        const totalProductos = ventas.reduce((acc, v) => acc + v.cantidad, 0);
+        const totalIngresos = ventas.reduce((acc, v) => acc + (v.cantidad * v.precio), 0);
+
+        doc.setFontSize(18);
+        doc.text("Reporte Financiero de Ventas", 14, 20);
+        
+        doc.setFontSize(10);
+        doc.setTextColor(100);
+        doc.text(`Generado el: ${new Date().toLocaleString()}`, 14, 28);
+        doc.text(`Artículos vendidos: ${totalProductos}`, 14, 34);
+        doc.text(`Ingresos totales: $${totalIngresos.toLocaleString('es-MX')}`, 14, 40);
+
+        
+        const columnas = ["ID", "Producto", "Modelo", "Cant.", "Precio Unit.", "Subtotal", "Fecha"];
+        
+        const filas = ventas.map(v => [
+            v.id,
+            v.nombre,
+            v.modelo,
+            v.cantidad,
+            `$${v.precio.toLocaleString()}`,
+            `$${(v.cantidad * v.precio).toLocaleString()}`,
+            new Date(v.fecha).toLocaleDateString()
+        ]);
+
+        
+        doc.autoTable({
+            head: [columnas],
+            body: filas,
+            foot: [['', '', '', '', 'TOTAL:', `$${totalIngresos.toLocaleString('es-MX')}`, '']],
+            startY: 45,
+            theme: 'grid',
+            headStyles: { fillColor: [46, 204, 113] }, 
+            footStyles: { fillColor: [39, 174, 96], textColor: [255, 255, 255], fontStyle: 'bold' },
+            columnStyles: {
+                4: { halign: 'right' },
+                5: { halign: 'right' }
+            }
+        });
+
+        doc.save(`Reporte_Financiero_${Date.now()}.pdf`);
+
+    } catch (error) {
+        console.error("Error al exportar PDF:", error);
+        alert("Asegúrate de que la tabla 'ventas' tenga la columna 'precio'.");
+    }
+}
+cargarProductos();
+
+
+/*
+async function eliminarProducto(id) {
+    if (!confirm('¿Estás seguro de que deseas eliminar este producto?')) return;
+
+    try {
+        const res = await fetch(`${URL}/productos/${id}`, {
+            method: 'DELETE'
+        });
+
+        const resultado = await res.json();
+
+        if (res.ok) {
+            alert(resultado.mensaje);
+            cargarProductos(); // Recargamos la tabla para que desaparezca el producto
+        } else {
+            alert('Error: ' + resultado.mensaje);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('No se pudo conectar con el servidor');
+    }
+}
+
+cargarProductos();
+*/
+
+
+
+async function cargarGrafica() {
+    const res = await fetch(URL + '/ventas-mensuales', {
+        headers: { 'Authorization': localStorage.getItem('token') }
+    });
+    const datos = await res.json();
+
+    // Extraer etiquetas (meses) y valores (ingresos)
+    const etiquetas = datos.map(d => d.mes);
+    const ingresos = datos.map(d => d.total_ingresos);
+
+    const ctx = document.getElementById('graficaVentas').getContext('2d');
+    
+    new Chart(ctx, {
+        type: 'line', // Tipo de gráfica: línea, barra (bar), etc.
+        data: {
+            labels: etiquetas,
+            datasets: [{
+                label: 'Ingresos Mensuales ($)',
+                data: ingresos,
+                borderColor: '#3498db',
+                backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                borderWidth: 3,
+                fill: true,
+                tension: 0.3 // Curvatura de la línea
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+}
+
+cargarGrafica();
+
+
+
+async function exportarMensualPDF() {
+    const mesSeleccionado = document.getElementById('mesReporte').value; 
+    
+    if (!mesSeleccionado) {
+        alert("Por favor, selecciona un mes primero.");
+        return;
+    }
+
+    try {
+        const res = await fetch(URL + '/ventas', {
+            headers: { 'Authorization': localStorage.getItem('token') }
+        });
+        const todasLasVentas = await res.json();
+
+        
+        const ventasMes = todasLasVentas.filter(v => {
+            const fechaVenta = v.fecha.substring(0, 7); 
+            return fechaVenta === mesSeleccionado;
+        });
+
+        if (ventasMes.length === 0) {
+            alert("No hay ventas registradas en el mes seleccionado.");
+            return;
+        }
+
+      
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        
+        const totalProductos = ventasMes.reduce((acc, v) => acc + v.cantidad, 0);
+        const totalIngresos = ventasMes.reduce((acc, v) => acc + (v.cantidad * v.precio), 0);
+
+        
+        doc.setFillColor(44, 62, 80);
+        doc.rect(0, 0, 210, 40, 'F');
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(22);
+        doc.text("REPORTE MENSUAL DE VENTAS JC", 14, 25);
+        
+        doc.setTextColor(0, 0, 0);
+        doc.setFontSize(12);
+        doc.text(`Periodo: ${mesSeleccionado}`, 14, 50);
+        doc.text(`Total Unidades: ${totalProductos}`, 14, 57);
+        doc.text(`Ingresos del Mes: $${totalIngresos.toLocaleString('es-MX')}`, 14, 64);
+
+        
+        const columnas = ["ID", "Producto", "Modelo", "Cant.", "Precio Unit.", "Subtotal"];
+        const filas = ventasMes.map(v => [
+            v.id,
+            v.nombre,
+            v.modelo,
+            v.cantidad,
+            `$${v.precio.toLocaleString()}`,
+            `$${(v.cantidad * v.precio).toLocaleString()}`
+        ]);
+
+        doc.autoTable({
+            head: [columnas],
+            body: filas,
+            startY: 75,
+            theme: 'grid',
+            headStyles: { fillColor: [44, 62, 80] },
+            foot: [['', '', '', '', 'TOTAL MES:', `$${totalIngresos.toLocaleString('es-MX')}`]],
+            footStyles: { fillColor: [231, 76, 60], textColor: [255, 255, 255] }
+        });
+
+        doc.save(`Reporte_Ventas_${mesSeleccionado}.pdf`);
+
+    } catch (error) {
+        console.error("Error al exportar:", error);
+    }
+}
+
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+
+ 
+
+  <div id="formulario-actualizacion">
+    <h3>Actualizar Stock de Producto</h3>
+    <input type="number" id="prodId" placeholder="ID del Producto">
+    <input type="number" id="prodCantidad" placeholder="Nueva Cantidad">
+    <button onclick="enviarActualizacion()">Actualizar Inventario</button>
+    <p id="mensaje-estado"></p>
+</div>
+
+<button onclick="exportarVentasPDF()" style="background-color: #e74c3c; color: white; padding: 10px;">
+    📄 Exportar Ventas a PDF
+</button>
+<!--
+<div style="width: 80%; margin: 30px auto; background: white; padding: 20px; border-radius: 8px;">
+    <h3>Tendencia de Ventas Mensuales</h3>
+    <canvas id="graficaVentas"></canvas>
+</div>
+-->
+
+<div style="background: #eee; padding: 15px; border-radius: 8px; margin: 20px 0;">
+    <h3>Generar Reporte Mensual</h3>
+    <label>Selecciona el mes:</label>
+    <input type="month" id="mesReporte" name="mesReporte">
+    <button onclick="exportarMensualPDF()" style="background-color: #2c3e50; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer;">
+        Descargar PDF Mensual
+    </button>
+</div>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

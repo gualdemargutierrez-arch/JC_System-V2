@@ -1,0 +1,221 @@
+
+:root {
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --success: #10b981;
+    --danger: #ef4444;
+    --bg-body: #f8fafc;
+    --bg-card: #ffffff;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --radius: 8px;
+    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    line-height: 1.6;
+    padding-bottom: 80px;
+}
+
+
+div[style*="text-align: right"] {
+    background-color: var(--bg-card) !important;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0.75rem 2rem !important;
+}
+
+div[style*="text-align: right"] span {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+
+h1:has(a) {
+    background: #000000;
+    padding: 2rem 2rem;
+    display: center;
+    gap: 20px;
+}
+
+h1 a {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+h1 a:hover {
+    opacity: 1;
+}
+
+
+body > h1 {
+    margin: 2rem;
+    font-size: 1.75rem;
+    color: var(--text-main);
+}
+
+h2, h3 {
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+    color: var(--text-main);
+}
+
+
+#formulario-actualizacion, 
+body > input[type], 
+body > h2 {
+    max-width: 1200px;
+    margin: 1rem 2rem;
+}
+
+
+#formulario-actualizacion, 
+.form-container {
+    background: var(--bg-card);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    margin-bottom: 2rem;
+}
+
+
+input, select {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.6rem 1rem !important;
+    font-size: 0.9rem;
+    transition: border-color 0.2s;
+    outline: none;
+    min-width: 150px;
+}
+
+input:focus {
+    border-color: var(--primary);
+    ring: 2px solid var(--primary);
+}
+
+button {
+    cursor: pointer;
+    font-weight: 800;
+    border-radius: 6px !important;
+    transition: all 0.2s;
+    border: none;
+    padding: 0.6rem 1.2rem !important;
+    font-size: 0.9rem;
+}
+
+button[onclick="agregarProducto()"],
+button[onclick="enviarActualizacion()"] {
+    background-color: var(--primary) !important;
+    color: white;
+}
+
+button:hover {
+    filter: brightness(90%);
+    transform: translateY(-1px);
+}
+
+
+table {
+    width: calc(100% - 8rem);
+    margin: 2rem auto !important;
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    overflow: hidden;
+    border-collapse: collapse;
+    box-shadow: var(--shadow);
+    border: none !important;
+}
+
+th {
+    background-color: #f1f5f9;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    padding: 1rem !important;
+    border: none !important;
+    text-align: left;
+}
+
+td {
+    padding: 1rem !important;
+    border-bottom: 1px solid var(--border) !important;
+    border-right: none !important;
+    border-left: none !important;
+    border-top: none !important;
+    font-size: 0.95rem;
+}
+
+tr:last-child td {
+    border-bottom: none !important;
+}
+
+tr:hover {
+    background-color: #f8fafc;
+}
+
+
+td[style*="color: red"] {
+    background-color: #fef2f2;
+    color: var(--danger) !important;
+    border-radius: 4px;
+}
+
+
+button[onclick="exportarVentasPDF()"] {
+    margin: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 6px -1px rgba(231, 76, 60, 0.3);
+}
+
+
+@media (max-width: 768px) {
+    input {
+        width: 100%;
+        margin: 5px 0 !important;
+    }
+    
+    table {
+        display: block;
+        overflow-x: auto;
+    }
+
+    body > h1, body > h2, #formulario-actualizacion {
+        margin: 1rem;
+    }
+}
+.btn22, .btn33{
+    padding: 10px 22px;
+  border-radius: 30px;
+  border: none;
+  background: #2563eb;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}

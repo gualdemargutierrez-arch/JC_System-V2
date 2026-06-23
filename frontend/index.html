@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <meta charset="UTF-8">
+  <title>Tienda Premium</title>
+
+  <link rel="stylesheet" href="/JC/frontend/Styles/index.css">
+
+</head>
+<body>
+  
+  <!-- HEADER -->
+  <header class="header">
+    <a href="">
+    <img src="img/logo.png" class="logo">
+    </a>
+   <div>
+    
+      <a href="inventario.html" class="btn1">Inventario</a>
+      <a href="admin.html" class="btn2">Admin</a>
+      <!--<a href="Boton.html" class="btn3">🐱</a>-->
+    </div>
+  </header>
+ 
+
+  <!-- CONTENIDO -->
+  <main class="container">
+
+    <!-- TARJETA -->
+    <div class="card">
+      <h2>Registrar venta</h2>
+
+      <select id="producto_id">
+        <option value="">Selecciona un producto</option>
+      </select>
+
+      <input type="number" id="cantidad" placeholder="Cantidad">
+      <input type="number" id="precio" placeholder="Precio unitario">
+
+      <button onclick="registrarVenta()">Vender</button>
+    </div>
+
+    <!-- RELOJ -->
+    <p id="clock"></p>
+
+  </main>
+
+  <!-- TABLA OCULTA -->
+  <table hidden>
+    <tbody id="tabla-productos"></tbody>
+  </table>
+
+  <script src="app.js"></script>
+
+  <script>
+    function updateTime() {
+      const now = new Date();
+      document.getElementById('clock').innerHTML = now.toLocaleString();
+    }
+    setInterval(updateTime, 1000);
+    updateTime();
+  </script>
+
+  <footer>
+      <a href="Boton.html">
+    <img src="img/JCLogoBlack.png" class="logo">
+    </a>
+  </footer>
+
+</body>
+</html>

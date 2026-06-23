@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <!--<button onclick="toggleDarkMode()" id="modo-btn">🌙</button>--> 
+    <link rel="stylesheet" href="/JC/frontend/Styles/eliminar.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--<h1><a href="admin.html">Admin</a></h1>
+    <title>Eliminar</title> -->
+    
+    <style>
+          body {
+      font-family: Arial;
+    }
+    input, select, button {
+      margin: 5px;
+      padding: 5px;
+    }
+    table {
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 8px;
+      border: 1px solid black;
+    }
+    </style>
+  <div>
+    <a href="admin.html" class="btn1">Regresar</a>
+    </div>
+</head>
+<body>
+
+    <div class="header">
+  <h1>Eliminar</h1>
+  
+</div>
+
+    <div style="margin-bottom: 15px;">
+    <label for="buscador"> Buscar producto:</label>
+    <input type="text" id="buscador" placeholder="Escribe nombre, modelo o color..." onkeyup="filtrarProductos()" style="width: 300px;">
+</div>
+<div id="formulario-actualizacion">
+    <h3>Actualizar Stock de Producto</h3>
+    <input type="number" id="prodId" placeholder="ID del Producto">
+    <input type="number" id="prodCantidad" placeholder="Type 0 to confirm">
+    <button onclick="enviarActualizacion()">Dar de baja</button>
+    <p id="mensaje-estado"></p>
+</div>
+
+      <h2>Inventario Actual</h2>
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Modelo</th>
+      <th>Color</th>
+      <th>Capacidad</th>
+      <th>Stock</th>
+      <th>Acciones</th> </tr>
+  </thead>
+  <tbody id="tabla-productos">
+    </tbody>
+</table>
+
+<script>
+
+const URL = 'http://localhost:3000';
+
+
+   async function cargarProductos() {
+    try {
+        console.log("Intentando conectar con:", URL + '/productos');
+        const res = await fetch(URL + '/productos');
+        
+        if (!res.ok) throw new Error("Error en la respuesta del servidor");
+
+        const productos = await res.json();
+        console.log("Productos recibidos:", productos);
+
+        const tabla = document.getElementById('tabla-productos');
+        if (!tabla) {
+            console.error("No se encontró el elemento con id 'tabla-productos' en el HTML");
+            return;
+        }
+
+        tabla.innerHTML = ''; 
+
+     productos.forEach(p => {
+    const sinStock = p.cantidad <= 0;
+    const filaEstilo = sinStock ? 'background-color: #424242; opacity: 10;' : '';
+    const textoStock = sinStock ? 'SIN STOCK' : p.cantidad;
+
+    tabla.innerHTML += `
+        <tr style="${filaEstilo}">
+            <td>${p.id}</td>
+            <td>${p.nombre}</td>
+            <td>${p.modelo}</td>
+            <td>${p.color}</td>
+            <td>${p.capacidad}</td>
+            <td style="font-weight: bold; color: ${sinStock ? 'red' : 'black'};">
+                ${textoStock}
+            </td>
+            <td>
+                <button onclick="eliminarProducto(${p.id})">Eliminar</button>
+            </td>
+        </tr>
+    `;
+});
+        console.log("Tabla dibujada con éxito");
+    } catch (error) {
+        console.error("Hubo un fallo al cargar productos:", error);
+    }
+}
+
+
+
+async function eliminarProducto(id) {
+    if (!confirm('¿Estás seguro de que deseas eliminar este producto?')) return;
+
+    try {
+        const res = await fetch(`${URL}/productos/${id}`, {
+            method: 'DELETE'
+        });
+
+        const resultado = await res.json();
+
+        if (res.ok) {
+            alert(resultado.mensaje);
+            cargarProductos(); 
+        } else {
+            alert('Error: ' + resultado.mensaje);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('No se pudo conectar con el servidor');
+    }
+}
+
+cargarProductos();
+
+function filtrarProductos() {
+    
+    const texto = document.getElementById('buscador').value.toLowerCase();
+    
+    
+    const filas = document.querySelectorAll('#tabla-productos tr');
+
+    filas.forEach(fila => {
+        
+        const contenidoFila = fila.textContent.toLowerCase();
+
+        
+        if (contenidoFila.includes(texto)) {
+            fila.style.display = "";
+        } else {
+            fila.style.display = "none";
+        }
+    });
+}
+
+
+async function enviarActualizacion() {
+    const id = document.getElementById('prodId').value;
+    const cantidad = document.getElementById('prodCantidad').value;
+    const mensajeElemento = document.getElementById('mensaje-estado');
+
+    if (!id || !cantidad) {
+        alert("Por favor, completa ambos campos");
+        return;
+    }
+
+    try {
+        const respuesta = await fetch('http://localhost:3000/update/productos', {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json' 
+            },
+            body: JSON.stringify({
+                id: id,       
+                cantidad: cantidad
+            })
+        });
+
+        const resultado = await respuesta.json();
+
+        if (respuesta.ok) {
+            mensajeElemento.innerText = "✅ " + resultado.mensaje;
+            mensajeElemento.style.color = "green";
+            cargarProductos(); 
+        } else {
+            mensajeElemento.innerText = "❌ Error: " + (resultado.error || resultado.mensaje);
+            mensajeElemento.style.color = "red";
+        }
+
+    } catch (error) {
+        console.error("Error de conexión:", error);
+        mensajeElemento.innerText = "No se pudo conectar con el servidor";
+    }
+}
+cargarProductos();
+
+
+
+
+function toggleDarkMode() {
+  document.body.classList.toggle('dark-mode');
+
+  // Guardar preferencia
+  if (document.body.classList.contains('dark-mode')) {
+    localStorage.setItem('modo', 'oscuro');
+  } else {
+    localStorage.setItem('modo', 'claro');
+  }
+}
+
+// Cargar preferencia al abrir
+window.onload = () => {
+  if (localStorage.getItem('modo') === 'oscuro') {
+    document.body.classList.add('dark-mode');
+  }
+};
+
+</script>
+
+
+
+</body>
+</html>

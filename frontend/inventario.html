@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Tienda</title>
+</head>
+<body>
+<link rel="stylesheet" href="/JC/frontend/Styles/inventario.css">
+  <h1>
+  <img src="img/logo.png" class="logo">
+  <a href="Index.html" class="btn1">Inicio</a>
+</h1>
+
+  <h2>Inventario</h2>
+
+  <div style="margin-bottom: 15px;">
+    <label for="buscador"> Buscar producto:</label>
+    <input type="text" id="buscador" placeholder="Escribe nombre, modelo o color..." onkeyup="filtrarProductos()" style="width: 300px;">
+</div>
+  <script src="app.js"></script>
+  <div style="display:flex; justify-content: space-between; align-items:center; margin-bottom:15px; flex-wrap: wrap; gap:10px;">
+ 
+
+<button class="btn-pdf" onclick="exportarPDF()">📄 Exportar PDF</button>
+</div>
+
+  <script>
+    function exportarPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      doc.text("Reporte de Productos", 14, 15);
+
+      doc.autoTable({
+        html: '#tablaPDF',
+        startY: 20
+      });
+
+      doc.save("productos.pdf");
+    }
+
+    function filtrarProductos() {
+    
+    const texto = document.getElementById('buscador').value.toLowerCase();
+    
+    
+    const filas = document.querySelectorAll('#tabla-productos tr');
+
+    filas.forEach(fila => {
+        
+        const contenidoFila = fila.textContent.toLowerCase();
+
+        
+        if (contenidoFila.includes(texto)) {
+            fila.style.display = "";
+        } else {
+            fila.style.display = "none";
+        }
+    });
+}
+
+  </script>
+
+
+
+  
+
+  <!--TABLA -->
+  <table border="1" id="tablaPDF">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Modelo</th>
+        <th>Color</th>
+        <th>Capacidad</th>
+        <th>Stock</th>
+      </tr>
+    </thead>
+    <tbody id="tabla-productos"></tbody>
+  </table>
+
+  <h3></h3>
+
+  <!-- Dropdown -->
+  <a id="producto_id"hidden>
+    
+  </a>
+
+  
+
+
+
+  <!-- LIBRERÍAS PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
+  <!-- SCRIPT -->
+
+</body>
+</html>
