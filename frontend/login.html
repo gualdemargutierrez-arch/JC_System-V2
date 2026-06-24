@@ -114,7 +114,7 @@ async function entrar() {
     const password = document.getElementById('pass').value;
     const errorTxt = document.getElementById('error');
 
-    const res = await fetch('http://localhost:3000/login', {
+    const res = await fetch('https://jc-system-v2.onrender.com/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
