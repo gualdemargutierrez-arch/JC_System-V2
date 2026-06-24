@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JC Publicidad</title>
+
+  <!-- Fuente elegante -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #f5f5f5;
+      color: #333;
+    }
+
+    /* HEADER */
+    header {
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 40px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .logo {
+      height: 60px;
+    }
+
+    header h2 {
+      font-weight: 600;
+      letter-spacing: 2px;
+    }
+
+    .btn1 {
+      padding: 10px 20px;
+      border-radius: 25px;
+      background: #000;
+      color: #fff;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .btn1:hover {
+      background: #333;
+    }
+
+    /* BANNER */
+    .banner {
+      height: 80vh;
+      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.7)),
+                  url('img/banner2.jpg') center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #fff;
+      padding: 20px;
+    }
+
+    .banner-content h1 {
+      font-size: 40px;
+      margin-bottom: 10px;
+    }
+
+    .banner-content p {
+      font-size: 18px;
+      opacity: 0.9;
+    }
+
+    /* CONTENIDO */
+    .contenido {
+      max-width: 900px;
+      margin: 50px auto;
+      padding: 30px;
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .contenido h1 {
+      font-size: 22px;
+      font-weight: 400;
+      line-height: 1.6;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .banner-content h1 {
+        font-size: 28px;
+      }
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #aaa;
+    }
+    footer img{
+      height: 10000cm;
+      width: 100cm;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <img src="img/logo.png" alt="JC Publicidad" class="logo">
+    <h2>JC PUBLICIDAD</h2>
+    <a href="Index.html" class="btn1">Regresar</a>
+  </header>
+
+  <section class="banner">
+    <div class="banner-content">
+      <h1>Bienvenido a JC Publicidad</h1>
+      <p>Personalización con calidad y creatividad</p>
+    </div>
+  </section>
+
+  <section class="contenido">
+    <h1>
+      Fundada en febrero de 2024, JC PUBLICIDAD ha crecido rápidamente gracias a su enfoque en la calidad y el detalle en la personalización de productos como yetis, vasos, playeras y tazas. La empresa nace como un proyecto extraescolar y en pocos meses se formalizó para ofrecer soluciones creativas tanto a individuos como a empresas que buscan artículos personalizados y promocionales.
+    </h1>
+  </section>
+ <footer>
+  © JC Publicidad
+ </footer>
+</body>
+</html>

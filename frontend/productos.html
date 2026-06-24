@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JC Publicidad</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+
+body{background:#0a0a0a;color:#fff;}
+
+
+header{
+  position:fixed;
+  width:100%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 30px;
+  background:rgba(0,0,0,0.6);
+  backdrop-filter:blur(10px);
+  z-index:1000;
+}
+
+.logo{height:50px;}
+
+.btn{
+  padding:8px 18px;
+  border-radius:25px;
+  background:#38bdf8;
+  color:#000;
+  text-decoration:none;
+  font-weight:600;
+}
+
+
+.carousel{height:100vh;overflow:hidden;position:relative;}
+
+.slides{
+  display:flex;
+  height:100%;
+  transition:transform .5s ease;
+  cursor:grab;
+}
+
+.slides.dragging{cursor:grabbing;transition:none;}
+
+.slide{min-width:100%;position:relative;}
+
+.slide img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  filter:brightness(0.6);
+}
+.content{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  text-align:center;
+}
+
+.content h1{font-size:3rem;}
+.content p{margin:15px 0;color:#ccc;}
+
+.prev,.next{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:30px;
+  background:rgba(0,0,0,0.5);
+  padding:10px;
+  border-radius:50%;
+  cursor:pointer;
+}
+
+.prev{left:20px;}
+.next{right:20px;}
+
+.dots{
+  position:absolute;
+  bottom:20px;
+  width:100%;
+  text-align:center;
+}
+
+.dot{
+  width:10px;
+  height:10px;
+  margin:5px;
+  background:#aaa;
+  border-radius:50%;
+  display:inline-block;
+  cursor:pointer;
+}
+
+.active{background:#38bdf8;}
+
+
+.productos{
+  padding:80px 20px;
+  text-align:center;
+}
+
+.productos h2{
+  font-size:2.5rem;
+  margin-bottom:40px;
+}
+
+.grid-productos{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:25px;
+}
+
+.card-producto{
+  background:#111;
+  border-radius:20px;
+  overflow:hidden;
+  transition:.4s;
+  cursor:pointer;
+}
+
+.card-producto img{
+  width:100%;
+  height:250px;
+  object-fit:cover;
+  transition:.4s;
+}
+
+.card-producto h3{padding:15px;}
+
+.card-producto:hover{
+  transform:translateY(-10px) scale(1.03);
+}
+
+.card-producto:hover img{
+  transform:scale(1.1);
+}
+
+/* MODAL */
+.modal{
+  display:none;
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.9);
+  text-align:center;
+  z-index:999;
+}
+
+.modal img{
+  margin-top:5%;
+  max-width:80%;
+}
+
+.close{
+  position:absolute;
+  top:20px;
+  right:30px;
+  font-size:40px;
+  cursor:pointer;
+}
+
+footer{
+  text-align:center;
+  padding:20px;
+  color:#aaa;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <img src="img/logo.png" class="logo">
+  <a href="Index.html" class="btn">Regresar</a>
+</header>
+
+
+<div class="carousel">
+  <div class="slides" id="slides">
+
+    <div class="slide">
+      <img src="img/vasos1.jpg">
+      <div class="content">
+        <h1>Vasos</h1>
+        <p>Diseños únicos</p>
+      </div>
+    </div>
+
+    <div class="slide">
+      <img src="img/termos1.jpg">
+      <div class="content">
+        <h1>Termos</h1>
+        <p>Calidad premium</p>
+      </div>
+    </div>
+
+    <div class="slide">
+      <img src="img/tazas1.jpg">
+      <div class="content">
+        <h1>Tazas</h1>
+        <p>Personalización total</p>
+      </div>
+    </div>
+
+    <div class="slide">
+      <img src="img/pluma2.PNG">
+      <div class="content">
+        <h1>Otros productos</h1>
+        <p>Plumas, Destapadores, Agendas y de más
+           todo personalizados a tus ideas</p>
+      </div>
+    </div>
+  </div>
+
+  <span class="prev" onclick="mover(-1)">❮</span>
+  <span class="next" onclick="mover(1)">❯</span>
+
+  <div class="dots" id="dots"></div>
+</div>
+
+
+<section class="productos">
+  <h2>Nuestros Productos</h2>
+
+  <div class="grid-productos">
+
+    <div class="card-producto">
+      <img src="img/vasoper.jpg">
+      <h3>Vasos</h3>
+    </div>
+
+    <div class="card-producto">
+      <img src="img/termopers.jpg">
+      <h3>Termos</h3>
+    </div>
+
+    <div class="card-producto">
+      <img src="img/pluma1.PNG">
+      <h3>Plumas</h3>
+    </div>
+
+    <div class="card-producto">
+      <img src="img/tazapers.PNG">
+      <h3>Tazas</h3>
+    </div>
+
+  </div>
+</section>
+
+<div id="modal" class="modal">
+  <span class="close" onclick="cerrarModal()">&times;</span>
+  <img id="imgModal">
+</div>
+
+<footer>
+  © JC Publicidad
+</footer>
+
+<script>
+let index = 0;
+const slides = document.getElementById("slides");
+const total = slides.children.length;
+const dotsContainer = document.getElementById("dots");
+
+let startX = 0;
+let currentX = 0;
+let isDragging = false;
+
+for(let i=0;i<total;i++){
+  let dot=document.createElement("span");
+  dot.classList.add("dot");
+  dot.onclick=()=>ir(i);
+  dotsContainer.appendChild(dot);
+}
+
+function actualizar(){
+  slides.style.transform=`translateX(-${index*100}%)`;
+  document.querySelectorAll(".dot").forEach((d,i)=>{
+    d.classList.toggle("active",i===index);
+  });
+}
+
+function mover(n){
+  index=(index+n+total)%total;
+  actualizar();
+}
+
+function ir(n){
+  index=n;
+  actualizar();
+}
+
+let auto=setInterval(()=>mover(1),5000);
+
+slides.addEventListener("mousedown",e=>{
+  isDragging=true;
+  startX=e.clientX;
+  slides.classList.add("dragging");
+  clearInterval(auto);
+});
+
+window.addEventListener("mouseup",()=>{
+  if(!isDragging)return;
+  isDragging=false;
+  slides.classList.remove("dragging");
+
+  let diff=currentX-startX;
+  if(diff>100)mover(-1);
+  else if(diff<-100)mover(1);
+
+  auto=setInterval(()=>mover(1),5000);
+});
+
+window.addEventListener("mousemove",e=>{
+  if(!isDragging)return;
+  currentX=e.clientX;
+});
+
+slides.addEventListener("touchstart",e=>{
+  startX=e.touches[0].clientX;
+  clearInterval(auto);
+});
+
+slides.addEventListener("touchend",e=>{
+  let endX=e.changedTouches[0].clientX;
+  let diff=endX-startX;
+
+  if(diff>80)mover(-1);
+  else if(diff<-80)mover(1);
+
+  auto=setInterval(()=>mover(1),5000);
+});
+
+document.querySelectorAll(".card-producto img").forEach(img=>{
+  img.onclick=()=>{
+    document.getElementById("modal").style.display="block";
+    document.getElementById("imgModal").src=img.src;
+  }
+});
+
+function cerrarModal(){
+  document.getElementById("modal").style.display="none";
+}
+
+actualizar();
+</script>
+
+</body>
+</html>
