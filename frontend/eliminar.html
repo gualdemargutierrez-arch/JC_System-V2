@@ -66,7 +66,7 @@
 
 <script>
 
-const URL = 'http://localhost:3000';
+const URL = 'https://jc-system-v2.onrender.com';
 
 
    async function cargarProductos() {
@@ -172,7 +172,7 @@ async function enviarActualizacion() {
     }
 
     try {
-        const respuesta = await fetch('http://localhost:3000/update/productos', {
+        const respuesta = await fetch('https://jc-system-v2.onrender.com/update/productos', {
             method: 'POST', 
             headers: {
                 'Content-Type': 'application/json' 
