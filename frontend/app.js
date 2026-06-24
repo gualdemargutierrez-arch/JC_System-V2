@@ -1,5 +1,5 @@
 
-const API = 'http://localhost:3000';
+const API = 'https://jc-system-v2.onrender.com';
 
 fetch(`${API}/productos`)
   .then(res => res.json())
@@ -46,7 +46,7 @@ window.vender = function(producto_id) {
 
 
 async function cargarProductos() {
-  const res = await fetch('http://localhost:3000/productos');
+  const res = await fetch('https://jc-system-v2.onrender.com/productos');
   const productos = await res.json();
 
   const select = document.getElementById('producto_id');
@@ -99,7 +99,7 @@ async function registrarVenta() {
         return;
     }
 
-    const res = await fetch('http://localhost:3000/ventas', {
+    const res = await fetch('https://jc-system-v2.onrender.com/ventas', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -136,7 +136,7 @@ async function registrarProductos() {
   const cantidad = document.getElementById('cantidad').value;
   
 
-  const res = await fetch('http://localhost:3000/productos', {
+  const res = await fetch('https://jc-system-v2.onrender.com/productos', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -152,7 +152,7 @@ async function registrarProductos() {
 
 
 async function hacerLogin() {
-    const res = await fetch('http://localhost:3000/login', {
+    const res = await fetch('https://jc-system-v2.onrender.com/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
