@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>JC Publicidad</title>
+  <link rel="icon" type="img" href="/img/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #000000;
+      color: #fff;
+    }
+
+    
+    header {
+      text-align: center;
+      padding: 20px;
+      position: relative;
+    }
+
+    .logo {
+      width: 90px;
+      margin-bottom: 10px;
+      animation: fadeDown 1s ease;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      letter-spacing: 2px;
+      animation: fadeDown 1.2s ease;
+    }
+
+    .btn11 {
+      position: absolute;
+      left: 20px;
+      top: 20px;
+      padding: 8px 18px;
+      border-radius: 25px;
+      background: #fff;
+      color: #000;
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    .btn11:hover {
+      transform: scale(1.05);
+    }
+
+    /* BANNER */
+    .banner {
+      height: 85vh;
+      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)),
+                  url('img/banner.jpg') center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .banner-content {
+      animation: fadeUp 1.5s ease;
+    }
+
+    .banner-content h1 {
+      font-size: 3rem;
+      margin-bottom: 15px;
+    }
+
+    .banner-content p {
+      color: #ccc;
+      margin-bottom: 20px;
+    }
+
+    .btn-banner {
+      padding: 12px 25px;
+      border-radius: 30px;
+      background: #38bdf8;
+      color: #000;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .btn-banner:hover {
+      transform: scale(1.08);
+      background: #0ea5e9;
+    }
+
+    /* CONTENEDOR */
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 40px 20px;
+    }
+
+    /* CARDS */
+    .card {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 25px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      opacity: 0;
+      transform: translateY(40px);
+      transition: 0.6s ease;
+    }
+
+    .card.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    h2 {
+      margin-bottom: 15px;
+    }
+
+    /* PRODUCTOS */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .producto {
+      background: #111;
+      padding: 20px;
+      border-radius: 15px;
+      text-align: center;
+      transition: 0.3s;
+    }
+
+    .producto:hover {
+      transform: translateY(-8px) scale(1.03);
+      background: #1a1a1a;
+    }
+
+    /* GALERÍA */
+    .galeria {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
+    }
+
+    .galeria img {
+      width: 100%;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.4s;
+    }
+
+    .galeria img:hover {
+      transform: scale(1.07);
+      filter: brightness(1.1);
+    }
+
+    /* BOTONES */
+    .btn, .btn2, .btn3, .btn4 {
+      display: inline-block;
+      margin: 10px 5px;
+      padding: 10px 20px;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+.btn5 {
+   display: inline-block;
+      margin: 10px 5px;
+      padding: 10px 20px;
+      border-radius: 25px;
+      text-decoration: none;
+      display: flex;
+      justify-content: center;
+      text-align: center;
+      font-weight: 600;
+      transition: 0.3s;
+}
+    .btn { background: #25d366; color: #000; }
+    .btn2 { background: #1877f2; color: #fff; }
+    .btn3 {
+      background: linear-gradient(45deg, #f09433, #dc2743, #bc1888);
+      color: #fff;
+    }
+    .btn4{background: #ffffff; color: #000000;}
+    .btn5{background: #000000; color: #ffffff;}
+
+    .btn:hover, .btn2:hover, .btn3:hover {
+      transform: scale(1.08);
+    }
+
+    /* MODAL */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+    }
+
+    .modal img {
+      margin: auto;
+      display: block;
+      max-width: 80%;
+      margin-top: 5%;
+      border-radius: 10px;
+      animation: zoom 0.4s ease;
+    }
+
+    .close {
+      position: absolute;
+      top: 20px;
+      right: 35px;
+      font-size: 40px;
+      cursor: pointer;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #aaa;
+    }
+    footer img{
+    height: 10px;
+    width: 10px;
+    }
+  
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes zoom {
+      from { transform: scale(0.7); }
+      to { transform: scale(1); }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <a href="acercade.html" class="btn11">Acerca de</a>
+  <img src="img/logo.png" class="logo">
+  <h1>JC PUBLICIDAD</h1>
+</header>
+
+<section class="banner">
+  <div class="banner-content">
+    <h1>Personalizamos tus ideas</h1>
+    <p>Productos únicos con calidad profesional</p>
+    <a href="https://wa.me/526682511890" class="btn-banner">Cotizar ahora</a>
+  </div>
+</section>
+
+<div class="container">
+
+  <div class="card reveal">
+    <h2>Galería</h2>
+    <div class="galeria">
+      <img src="img/p1.jpg" onclick="abrirModal(this.src)">
+      <img src="img/p2.jpg" onclick="abrirModal(this.src)">
+      <img src="img/p3.jpg" onclick="abrirModal(this.src)">  
+      <img src="img/p4.jpg" onclick="abrirModal(this.src)">      
+      <img src="img/p5.jpg" onclick="abrirModal(this.src)">
+      <img src="img/p6.jpg" onclick="abrirModal(this.src)">
+      <img src="img/p7.jpg" onclick="abrirModal(this.src)">
+      <img src="img/p8.jpg" onclick="abrirModal(this.src)">
+    </div>
+  </div>
+
+  <div class="card reveal">
+    <h2>Productos</h2>
+    <div class="grid">
+      <div class="producto"><h3>Termos</h3></div>
+      <div class="producto"><h3>Vasos</h3></div>
+      <div class="producto"><h3>Otros</h3></div>
+     
+    </div>
+     <a href="productos.html" class="btn5">Ver</a>
+  </div>
+
+  <div class="card reveal">
+    <h2>Contacto</h2>
+    <a href="https://wa.me/526682511890" class="btn">WhatsApp</a>
+    <a href="https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.facebook.com/p/JC-Publicidad-61555118675534/&ved=2ahUKEwiytbT725OUAxVVJEQIHWU7IKQQFnoECDQQAQ&usg=AOvVaw2GV1Fy2NdNtmihvdEkaa80" class="btn2">Facebook</a>
+    <a href="https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.instagram.com/jc_publicidad31/&ved=2ahUKEwiytbT725OUAxVVJEQIHWU7IKQQFnoECDUQAQ&usg=AOvVaw2c8FZ7-yZYMdIsOJG66e8u" class="btn3">Instagram</a>
+    <a href="https://maps.app.goo.gl/mTMPUizb1h1ajPGG8" class="btn4">📍Ubicación</a> 
+  </div>
+
+
+</div>
+
+<div id="modal" class="modal" onclick="cerrarModal()">
+  <span class="close">&times;</span>
+  <img id="imgModal">
+</div>
+
+<footer>
+  © JC Publicidad
+  <img src="img/logodelospro.png">
+</footer>
+
+<script>
+  function abrirModal(src) {
+    document.getElementById("modal").style.display = "block";
+    document.getElementById("imgModal").src = src;
+  }
+
+  function cerrarModal() {
+    document.getElementById("modal").style.display = "none";
+  }
+
+  const cards = document.querySelectorAll('.reveal');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('show');
+      }
+    });
+  });
+
+  cards.forEach(card => observer.observe(card));
+</script>
+
+</body>
+</html>
