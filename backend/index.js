@@ -167,7 +167,7 @@ app.delete('/productos/:id', (req, res) => {
 
 
 app.listen(3000, () => {
-    console.log('Servidor corriendo en http://localhost:3000');
+    console.log('Servidor corriendo en https://jc-system-v2.onrender.com');
 });
 
 
